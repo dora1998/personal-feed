@@ -34,16 +34,15 @@ func main() {
 }
 
 func fetch() *feeder.Feed {
-	rssFetcher := feeder.NewRSSFetcher("http://dorapocket.starfree.jp/feed/")
-	qiitaFetcher := feeder.NewQiitaFetcher("https://qiita.com/api/v2/users/dora1998/items")
+	euphoFetcher := NewEuphoFetcher("http://anime-eupho.com/news/")
 
 	// Fetch data using goroutine.
-	items := feeder.Crawl(rssFetcher, qiitaFetcher)
+	items := feeder.Crawl(euphoFetcher)
 
 	feed := &feeder.Feed{
-		Title:       "My feeds",
-		Link:        &feeder.Link{Href: "http://feed-api.minoru.dev/rss"},
-		Description: "My feeds.",
+		Title:       "Personal feeds",
+		Link:        &feeder.Link{Href: "http://personal-feed.minoru.dev/rss"},
+		Description: "Personal feeds.",
 		Author: &feeder.Author{
 			Name:  "Minoru Takeuchi",
 			Email: "me@minoru.dev"},
