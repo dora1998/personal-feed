@@ -10,12 +10,12 @@ import (
 	"time"
 )
 
-// QiitaFetcher is ...
+// EuphoFetcher is ...
 type euphoFetcher struct {
 	URL string
 }
 
-//NewQiitaFetcher is ...
+//NewEuphoFetcher is ...
 func NewEuphoFetcher(url string) feeder.Fetcher {
 	return &euphoFetcher{URL: url}
 }
