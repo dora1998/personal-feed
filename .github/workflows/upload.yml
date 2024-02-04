@@ -18,6 +18,7 @@ jobs:
 
       - name: Build and run
         run: |
+          mkdir feed
           go mod download
           go run .
 
