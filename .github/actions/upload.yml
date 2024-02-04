@@ -1,0 +1,38 @@
+name: Upload to Cloudflare R2
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.21"
+
+      - name: Build and run
+        run: |
+          go mod download
+          go run .
+
+      - name: Install s5cmd
+        run: |
+          wget https://github.com/peak/s5cmd/releases/download/v2.2.2/s5cmd_2.2.2_Linux-64bit.tar.gz
+          tar -xvf s5cmd_2.2.2_Linux-64bit.tar.gz
+          sudo mv s5cmd /usr/local/bin/
+
+      - name: Upload to Cloudflare R2
+        run: |
+          s5cmd sync ./feed/ s3://rss/personal/
+
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          S3_ENDPOINT_URL: https://479110efddd529f7f96ddad81c4e8733.r2.cloudflarestorage.com
